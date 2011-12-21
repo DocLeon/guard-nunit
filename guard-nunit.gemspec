@@ -4,7 +4,7 @@ require "guard-nunit/version"
 
 Gem::Specification.new do |s|
   s.name        = "guard-nunit"
-  s.version     = Guard::Nunit::VERSION
+  s.version     = Guard::NUnit::VERSION
   s.authors     = ["Mark Glenn"]
   s.email       = ["markglenn@gmail.com"]
   s.homepage    = ""

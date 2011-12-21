@@ -3,7 +3,7 @@ require 'guard/guard'
 require "guard-nunit/version"
 
 module Guard
-  class NUnit < Guard
+  class NUnitGuard < Guard
     # Initialize a Guard.
     # @param [Array<Guard::Watcher>] watchers the Guard file watchers
     # @param [Hash] options the custom Guard options
