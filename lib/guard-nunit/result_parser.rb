@@ -2,8 +2,13 @@ module Guard
   module NUnit
     class ResultParser
 
+      # Number of tests run
       attr_reader :tests_run
+
+      # Number of failures
       attr_reader :failures
+
+      # Run time
       attr_reader :run_time
 
       def initialize( results )
@@ -12,8 +17,14 @@ module Guard
         end
       end
 
-      def is_passing
+      # Is the result a passing result?
+      def is_passing?
         @failures == 0
+      end
+
+      # Does this parser have any results
+      def has_results?
+        return !@tests_run.nil?
       end
 
     private

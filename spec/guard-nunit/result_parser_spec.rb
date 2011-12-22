@@ -39,12 +39,24 @@ describe Guard::NUnit::ResultParser do
   describe 'is_passing' do
     it 'should be true if all tests passed' do
       parser = ResultParser.new( 'Tests run: 1234, Failures: 0' )
-      parser.is_passing.should be_true
+      parser.is_passing?.should be_true
     end
 
     it 'should be false with a failure' do
       parser = ResultParser.new( 'Tests run: 1234, Failures: 1' )
-      parser.is_passing.should be_false
+      parser.is_passing?.should be_false
+    end
+  end
+
+  describe 'has_results' do
+    it 'should be false if no results' do
+      parser = ResultParser.new( '' )
+      parser.has_results?.should be_false
+    end
+
+    it 'should be true with results' do
+      parser = ResultParser.new( 'Tests run: 1234' )
+      parser.has_results?.should be_true
     end
   end
 end
