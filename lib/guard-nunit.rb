@@ -11,7 +11,8 @@ module Guard
       super
 
       @options = { 
-        all_on_start: true
+        all_on_start: true,
+        version: '4'
       }.merge( options )
     end
 

@@ -10,4 +10,5 @@ describe Guard::NUnitGuard do
       subject.start
     end
   end
+
 end
