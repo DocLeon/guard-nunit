@@ -9,9 +9,12 @@ module Guard
           :command_options => '-nologo'
         }.merge( options )
 
+        # Default command
         @nunit_command = 'nunit-console'
+
         @nunit_command << '4' if options[ :version ] == '4.0'
 
+        # Version 2.0 - 3.5 needs to run nunit-console2
         if %w{ 2.0 3.0 3.5 }.include?( options[ :version ] )
           @nunit_command << '2'
         end
@@ -25,8 +28,11 @@ module Guard
         command = nunit_command
         command << " #{command_options}" unless command_options.empty? or command_options.nil?
 
-        command << " #{files.join(' ')}" if files.is_a?(Enumerable)
-        command << " #{files}" if files.is_a?(String)
+        if files.respond_to?( :join )
+          command << " #{files.join(' ')}" if files.respond_to?(:join)
+        else
+          command << " #{files}" if files.is_a?(String)
+        end
 
         command
       end
