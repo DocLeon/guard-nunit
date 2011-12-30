@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'guard-nunit/runner'
+require 'guard/nunit/runner'
 
 Runner = Guard::NUnit::Runner
 

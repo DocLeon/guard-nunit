@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "guard-nunit/version"
+require "guard/nunit/version"
 
 Gem::Specification.new do |s|
   s.name        = "guard-nunit"
-  s.version     = Guard::NUnit::VERSION
+  s.version     = Guard::NUnitVersion::VERSION
   s.authors     = ["Mark Glenn"]
   s.email       = ["markglenn@gmail.com"]
   s.homepage    = ""

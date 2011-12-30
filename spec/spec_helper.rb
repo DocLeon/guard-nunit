@@ -1,5 +1,5 @@
 require 'rspec'
-require 'guard-nunit'
+require 'guard/nunit'
 
 ENV["GUARD_ENV"] = 'test'
 

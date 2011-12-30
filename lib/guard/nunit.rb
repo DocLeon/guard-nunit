@@ -1,9 +1,13 @@
 require 'guard'
 require 'guard/guard'
-require "guard-nunit/version"
+require 'guard/notifier'
 
 module Guard
-  class NUnitGuard < Guard
+  class NUnit < Guard
+
+    autoload :Runner, 'guard/nunit/runner'
+    autoload :ResultParser, 'guard/nunit/result_parser'
+
     # Initialize a Guard.
     # @param [Array<Guard::Watcher>] watchers the Guard file watchers
     # @param [Hash] options the custom Guard options
@@ -11,8 +15,8 @@ module Guard
       super
 
       @options = { 
-        all_on_start: true,
-        version: '4'
+        :all_on_start => true,
+        :version => '4.0'
       }.merge( options )
     end
 
@@ -38,7 +42,20 @@ module Guard
     # This method should be principally used for long action like running all specs/tests/...
     # @raise [:task_has_failed] when run_all has failed
     def run_all
+      runner = Runner.new( :version => @options[ :version ] )
+
       files = Dir.glob('**/*Tests.dll')
+      results = `#{runner.get_command( files )}`
+      parser = ResultParser.new(results)
+
+      puts results
+      message = "Tests run: #{parser.tests_run}, Failures: #{parser.failures}\nTime: #{parser.run_time}"
+
+      if parser.is_passing?
+        ::Guard::Notifier.notify( message, :title => "NUnit results", :image => :success, :priority => -2)
+      else
+        ::Guard::Notifier.notify( message, :title => "NUnit results", :image => :failure, :priority => 2)
+      end
     end
 
     # Called on file(s) modifications that the Guard watches.

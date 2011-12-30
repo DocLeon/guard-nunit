@@ -1,5 +1,5 @@
 module Guard
-  module NUnit
+  class NUnit
     class Runner
 
       attr_reader :nunit_command

@@ -1,0 +1,3 @@
+guard 'nunit', :version => '4.0' do
+  watch(%r{^.+\.Tests\.dll$})
+end

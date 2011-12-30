@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'guard-nunit/result_parser'
+require 'guard/nunit/result_parser'
 
 ResultParser = Guard::NUnit::ResultParser
 

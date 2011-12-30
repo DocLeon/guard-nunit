@@ -1,5 +1,5 @@
 module Guard
-  module NUnit
+  class NUnit
     class ResultParser
 
       # Number of tests run

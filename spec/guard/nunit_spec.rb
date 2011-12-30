@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Guard::NUnitGuard do
+describe Guard::NUnit do
   let ( :default_options ){ { all_on_start: true } }
-  subject { Guard::NUnitGuard.new }
+  subject { Guard::NUnit.new }
 
   describe "start" do
     it 'should run all if all_on_start option is set' do
