@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Guard::NUnit do
-  let ( :default_options ){ { all_on_start: true } }
+  let ( :default_options ){ { :all_on_start => true } }
   subject { Guard::NUnit.new }
 
   describe "start" do

@@ -30,15 +30,15 @@ module Guard
     private
 
       def parse_line( line )
-        /^Tests run: (\d+)/.match( line ) do |m|
+        if ( m = /^Tests run: (\d+)/.match( line ) )
           @tests_run = m[1].to_i
         end
 
-        /^Tests run:.*Failures: (\d+)/.match( line ) do |m|
+        if ( m = /^Tests run:.*Failures: (\d+)/.match( line ) )
           @failures = m[1].to_i
         end
 
-        /^Tests run:.*Time: (.*)$/.match( line ) do |m|
+        if ( m = /^Tests run:.*Time: (.*)$/.match( line ) )
           @run_time = m[1]
         end
       end

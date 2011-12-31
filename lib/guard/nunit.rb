@@ -55,6 +55,7 @@ module Guard
         ::Guard::Notifier.notify( message, :title => "NUnit results", :image => :success, :priority => -2)
       else
         ::Guard::Notifier.notify( message, :title => "NUnit results", :image => :failure, :priority => 2)
+        raise :task_has_failed
       end
     end
 
