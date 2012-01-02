@@ -27,6 +27,10 @@ module Guard
         return !@tests_run.nil?
       end
 
+      def execute
+        `#{runner.get_command( paths )}`
+      end
+
     private
 
       def parse_line( line )

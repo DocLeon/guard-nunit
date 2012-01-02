@@ -7,6 +7,7 @@ module Guard
 
     autoload :Runner, 'guard/nunit/runner'
     autoload :ResultParser, 'guard/nunit/result_parser'
+    autoload :Notification, 'guard/nunit/notification'
 
     # Initialize a Guard.
     # @param [Array<Guard::Watcher>] watchers the Guard file watchers
@@ -42,27 +43,22 @@ module Guard
     # This method should be principally used for long action like running all specs/tests/...
     # @raise [:task_has_failed] when run_all has failed
     def run_all
-      runner = Runner.new( :version => @options[ :version ] )
-
-      files = Dir.glob('**/*Tests.dll')
-      results = `#{runner.get_command( files )}`
-      parser = ResultParser.new(results)
-
-      puts results
-      message = "Tests run: #{parser.tests_run}, Failures: #{parser.failures}\nTime: #{parser.run_time}"
-
-      if parser.is_passing?
-        ::Guard::Notifier.notify( message, :title => "NUnit results", :image => :success, :priority => -2)
-      else
-        ::Guard::Notifier.notify( message, :title => "NUnit results", :image => :failure, :priority => 2)
-        raise :task_has_failed
-      end
+      run_on_change( Dir.glob('**/*\.Tests.dll') )
     end
 
     # Called on file(s) modifications that the Guard watches.
     # @param [Array<String>] paths the changes files or paths
     # @raise [:task_has_failed] when run_on_change has failed
     def run_on_change(paths)
+      runner = Runner.new( :version => @options[ :version ] )
+
+      results = runner.execute
+      parser = ResultParser.new(results)
+
+      puts results
+
+      Notification.notify_results( parser.run_time, parser.tests_run, parser.failures )
+      raise :task_has_failed unless parser.is_passing?
     end
 
     # Called on file(s) deletions that the Guard watches.
