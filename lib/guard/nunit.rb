@@ -52,7 +52,7 @@ module Guard
     def run_on_change(paths)
       runner = Runner.new( :version => @options[ :version ] )
 
-      results = runner.execute
+      results = runner.execute( paths )
       parser = ResultParser.new(results)
 
       puts results

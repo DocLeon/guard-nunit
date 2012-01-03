@@ -37,6 +37,9 @@ module Guard
         command
       end
       
+      def execute( paths )
+        `#{get_command( paths )}`
+      end
     end
   end
 end
