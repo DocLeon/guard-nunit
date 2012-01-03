@@ -58,7 +58,7 @@ module Guard
       puts results
 
       Notification.notify_results( parser.run_time, parser.tests_run, parser.failures )
-      raise :task_has_failed unless parser.is_passing?
+      throw :task_has_failed unless parser.is_passing?
     end
 
     # Called on file(s) deletions that the Guard watches.
