@@ -1,3 +1,5 @@
+require 'pathname'
+
 module Guard
   class NUnit
     class Runner
@@ -6,18 +8,23 @@ module Guard
 
       def initialize( options = { } )
         @options = { 
-          :command_options => '-nologo'
+          :command_options => '-nologo',
+          :version => '2.0'
         }.merge( options )
+      end
 
-        # Default command
-        @nunit_command = 'nunit-console'
+      def mono_path
+        return @mono_path if @mono_path
 
-        @nunit_command << '4' if options[ :version ] == '4.0'
+        path = which 'mono'
 
-        # Version 2.0 - 3.5 needs to run nunit-console2
-        if %w{ 2.0 3.0 3.5 }.include?( options[ :version ] )
-          @nunit_command << '2'
-        end
+        @mono_path = path ? path.parent.parent : nil
+      end
+
+      def nunit_command
+        return @nunit_command if @nunit_command
+
+        @nunit_command = "#{mono_path}/Home/lib/mono/#{@options[ :version ]}/nunit-console.exe"
       end
 
       def command_options
@@ -39,6 +46,22 @@ module Guard
       
       def execute( paths )
         `#{get_command( paths )}`
+      end
+
+      # Cross-platform way of finding an executable in the $PATH.
+      #
+      #   which('ruby') #=> /usr/bin/ruby
+      def which( cmd )
+        exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
+
+        ENV[ 'PATH' ].split( File::PATH_SEPARATOR ).each do |path|
+          exts.each do |ext|
+            exe = "#{path}/#{cmd}#{ext}"
+            return Pathname.new(exe).realpath if File.executable? exe
+          end 
+        end
+
+        return nil
       end
     end
   end

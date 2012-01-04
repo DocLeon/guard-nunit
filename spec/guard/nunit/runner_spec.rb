@@ -8,23 +8,21 @@ describe Guard::NUnit::Runner do
 
   describe '.NET version' do
     it 'should use nunit-console4 for version 4.0' do
-      Runner.new( :version => '4.0' ).nunit_command.should == 'nunit-console4'
+      runner = Runner.new( :version => '4.0' )
+      runner.stub!( :mono_path ){ '/my/path' }
+      runner.nunit_command.should == '/my/path/Home/lib/mono/4.0/nunit-console.exe'
     end
 
     it 'should use nunit-console2 for version 2.0' do
-      Runner.new( :version => '2.0' ).nunit_command.should == 'nunit-console2'
-    end
-
-    it 'should use nunit-console2 for version 3.0' do
-      Runner.new( :version => '3.0' ).nunit_command.should == 'nunit-console2'
-    end
-
-    it 'should use nunit-console2 for version 3.5' do
-      Runner.new( :version => '3.5' ).nunit_command.should == 'nunit-console2'
+      runner = Runner.new( :version => '2.0' )
+      runner.stub!( :mono_path ){ '/my/path' }
+      runner.nunit_command.should == '/my/path/Home/lib/mono/2.0/nunit-console.exe'
     end
 
     it 'should use nunit-console for other versions' do
-      Runner.new.nunit_command.should == 'nunit-console'
+      runner = Runner.new
+      runner.stub!( :mono_path ){ '/my/path' }
+      runner.nunit_command.should == '/my/path/Home/lib/mono/2.0/nunit-console.exe'
     end
   end
 
@@ -55,6 +53,43 @@ describe Guard::NUnit::Runner do
       runner = Runner.new
       runner.get_command( ['my_dll.dll', 'my_other_dll.dll'] ).should == 
         'nunit-console -nologo my_dll.dll my_other_dll.dll'
+    end
+  end
+
+  describe 'which' do
+    before :each do
+      ENV['PATH'] = '/my/path'
+      ENV['PATHEXT'] = nil
+    end
+
+    it 'should return path to executable' do
+      File.stub!( :executable? ){ true }
+      
+      Pathname.stub!( :new ) do
+        mock( 'pathname', :realpath => '/my/path/myexe' )
+      end
+
+      Runner.new.which( 'myexe' ).should == '/my/path/myexe'
+    end
+
+    it 'should return nil if missing file' do
+      File.stub!( :executable? ){ false }
+
+      Runner.new.which( 'myexe' ).should be_nil
+    end
+
+  end
+
+  describe 'mono_path' do
+    
+    it 'should return path to mono' do
+      runner = Runner.new
+
+      runner.stub!( :which ) do
+        mock( 'path', :parent => mock( 'path', :parent => '/my/path' ) )
+      end
+
+      runner.mono_path.should == '/my/path'
     end
   end
 
