@@ -11,4 +11,20 @@ describe Guard::NUnit do
     end
   end
 
+  describe 'parse_results' do
+    before :each do
+      @parser = Guard::NUnit::ResultParser.new( '' )
+      Guard::NUnit::ResultParser.stub!( :new ){ @parser }
+      Guard::NUnit::Notification.stub( :notify_results ){ }
+    end
+
+    it 'should throw :task_has_failed on failure' do
+      @parser.stub!( :is_passing? ){ false }
+
+      lambda {
+        subject.parse_results( '' )
+      }.should throw_symbol :task_has_failed
+    end
+  end
+
 end

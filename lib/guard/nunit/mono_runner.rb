@@ -24,6 +24,7 @@ module Guard
 
       # Root path of the mono installation
       def mono_path
+        return nil if mono_command.nil?
         mono_command.parent.parent
       end
 
