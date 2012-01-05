@@ -46,13 +46,13 @@ describe Guard::NUnit::Runner do
 
     it 'should use command options' do
       runner = Runner.new( :command_options => '-my-option' )
-      runner.get_command( 'my_dll.dll' ).should == 'nunit-console -my-option my_dll.dll'
+      runner.get_command( 'my_dll.dll' ).should =~ /-my-option my_dll\.dll$/
     end
 
     it 'should handle multiple files' do
       runner = Runner.new
-      runner.get_command( ['my_dll.dll', 'my_other_dll.dll'] ).should == 
-        'nunit-console -nologo my_dll.dll my_other_dll.dll'
+      runner.get_command( ['my_dll.dll', 'my_other_dll.dll'] ).should =~
+        /-nologo my_dll\.dll my_other_dll\.dll$/
     end
   end
 
