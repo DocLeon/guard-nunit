@@ -5,7 +5,7 @@ require 'guard/notifier'
 module Guard
   class NUnit < Guard
 
-    autoload :Runner, 'guard/nunit/runner'
+    autoload :MonoRunner, 'guard/nunit/mono_runner'
     autoload :ResultParser, 'guard/nunit/result_parser'
     autoload :Notification, 'guard/nunit/notification'
 
@@ -50,21 +50,24 @@ module Guard
     # @param [Array<String>] paths the changes files or paths
     # @raise [:task_has_failed] when run_on_change has failed
     def run_on_change(paths)
-      runner = Runner.new( :version => @options[ :version ] )
+      runner = MonoRunner.new( :version => @options[ :version ] )
 
-      results = runner.execute( paths )
-      parser = ResultParser.new(results)
-
-      puts results
-
-      Notification.notify_results( parser.run_time, parser.tests_run, parser.failures )
-      throw :task_has_failed unless parser.is_passing?
+      parse_results( runner.execute( paths ) )
     end
 
     # Called on file(s) deletions that the Guard watches.
     # @param [Array<String>] paths the deleted files or paths
     # @raise [:task_has_failed] when run_on_change has failed
     def run_on_deletion(paths)
+    end
+
+    def parse_results( results )
+      parser = ResultParser.new(results)
+
+      puts results
+
+      Notification.notify_results( parser.run_time, parser.tests_run, parser.failures )
+      throw :task_has_failed unless parser.is_passing?
     end
   end
 end

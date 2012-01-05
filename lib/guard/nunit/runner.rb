@@ -13,18 +13,8 @@ module Guard
         }.merge( options )
       end
 
-      def mono_path
-        return @mono_path if @mono_path
-
-        path = which 'mono'
-
-        @mono_path = path ? path.parent.parent : nil
-      end
-
       def nunit_command
-        return @nunit_command if @nunit_command
-
-        @nunit_command = "#{mono_path}/Home/lib/mono/#{@options[ :version ]}/nunit-console.exe"
+        raise "Not implemented"
       end
 
       def command_options
