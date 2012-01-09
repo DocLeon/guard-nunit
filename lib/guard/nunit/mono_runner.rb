@@ -13,7 +13,7 @@ module Guard
       def nunit_command
         return @nunit_command if @nunit_command
 
-        @nunit_command = "exec #{mono_command} #{nunit_path( @options[ :version ] )}"
+        @nunit_command = "#{mono_command} #{nunit_path( @options[ :version ] )}"
       end
  
       # Path to the mono
@@ -30,7 +30,7 @@ module Guard
 
       # Path to nunit exe
       def nunit_path( version )
-        "#{mono_path}/Home/lib/mono/#{version}/nunit-console.exe"
+        "#{mono_path}/lib/mono/#{version}/nunit-console.exe"
       end
     end
   end

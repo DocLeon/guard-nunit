@@ -11,21 +11,21 @@ describe Guard::NUnit::MonoRunner do
       runner = MonoRunner.new( :version => '4.0' )
       runner.stub!( :mono_path ){ '/my/path' }
       runner.stub!( :mono_command ){ 'mono' }
-      runner.nunit_command.should == 'exec mono /my/path/Home/lib/mono/4.0/nunit-console.exe'
+      runner.nunit_command.should == 'mono /my/path/lib/mono/4.0/nunit-console.exe'
     end
 
     it 'should use nunit-console2 for version 2.0' do
       runner = MonoRunner.new( :version => '2.0' )
       runner.stub!( :mono_path ){ '/my/path' }
       runner.stub!( :mono_command ){ 'mono' }
-      runner.nunit_command.should == 'exec mono /my/path/Home/lib/mono/2.0/nunit-console.exe'
+      runner.nunit_command.should == 'mono /my/path/lib/mono/2.0/nunit-console.exe'
     end
 
     it 'should use nunit-console for other versions' do
       runner = MonoRunner.new
       runner.stub!( :mono_path ){ '/my/path' }
       runner.stub!( :mono_command ){ 'mono' }
-      runner.nunit_command.should == 'exec mono /my/path/Home/lib/mono/2.0/nunit-console.exe'
+      runner.nunit_command.should == 'mono /my/path/lib/mono/2.0/nunit-console.exe'
     end
   end
 
