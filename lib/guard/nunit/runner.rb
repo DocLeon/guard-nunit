@@ -35,6 +35,7 @@ module Guard
       end
       
       def execute( paths )
+        UI.info "#{get_command( paths )}"
         `#{get_command( paths )}`
       end
 
